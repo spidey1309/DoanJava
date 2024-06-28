@@ -15,5 +15,4 @@ public class Category {
     private Long id;
     @NotBlank(message = "Tên là bắt buộc")
     private String name;
-
 }

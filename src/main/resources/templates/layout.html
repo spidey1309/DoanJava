@@ -11,7 +11,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand text-white" href="">Web Bán Hàng</a>
+        <a class="navbar-brand text-white" href="">Thời trang Nike's</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -31,12 +31,16 @@
                     <a th:href="@{/categories/add}" class="nav-link text-white">Add
                         New Category</a>
                 </li>
+                <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
+                    <a th:href="@{/styles/add}" class="nav-link text-white">Add
+                        New Style</a>
+                </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
                 <li class="nav-item d-flex align-items-center"
                     sec:authorize="isAuthenticated()">
                     <span class="navbar-text text-white">
-                        Xin chào, <span sec:authentication="name" type="margin right: 20px;"></span>
+                        Xin chào, <span sec:authentication="name" style="margin right: 20px;"></span>
                     </span>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
