@@ -15,7 +15,5 @@ public class Category {
     private Long id;
     @NotBlank(message = "Tên là bắt buộc")
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "style_id")
-    private Style style;
+
 }

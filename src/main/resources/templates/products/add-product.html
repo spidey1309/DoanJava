@@ -21,8 +21,7 @@
         </div>
         <div class="mb-3">
             <label for="price" class="form-label">Price:</label>
-            <input type="text" th:field="*{price}" class="form-control" id="price"
-                   required>
+            <input type="text" th:field="*{price}" class="form-control" id="price" required>
         </div>
         <div class="mb-3">
             <label for="category" class="form-label">Category:</label>
@@ -32,10 +31,21 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="description" class="form-label">Description:</label>
-            <textarea th:field="*{description}" class="form-control"
-                      id="description" required></textarea>
+            <label for="size" class="form-label">Size:</label>
+            <input type="text" th:field="*{size}" class="form-control" id="size" required>
         </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description:</label>
+            <textarea th:field="*{description}" class="form-control" id="description" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="producttype" class="form-label">Product Type:</label>
+            <select th:field="*{productType}" class="form-control" id="producttype">
+                <option th:each="producttype : ${productTypes}"
+                        th:value="${producttype.id}" th:text="${producttype.name}"></option>
+            </select>
+        </div>
+
         <div class="mb-3">
             <label for="ImageUrl">Image</label>
             <input type="file" id="imageUrl" name="ImageUrl" class="form-control" />

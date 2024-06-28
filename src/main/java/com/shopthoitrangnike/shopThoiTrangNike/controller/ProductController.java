@@ -1,8 +1,10 @@
 package com.shopthoitrangnike.shopThoiTrangNike.controller;
 
 import com.shopthoitrangnike.shopThoiTrangNike.model.Product;
+import com.shopthoitrangnike.shopThoiTrangNike.model.ProductType;
 import com.shopthoitrangnike.shopThoiTrangNike.service.CategoryService;
 import com.shopthoitrangnike.shopThoiTrangNike.service.ProductService;
+import com.shopthoitrangnike.shopThoiTrangNike.service.ProductTypeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,13 +15,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/products")
 public class ProductController {
     @Autowired
     private ProductService productService;
     @Autowired
-    private CategoryService categoryService; // Đảm bảo bạn đã inject CategoryService
+    private CategoryService categoryService;
+    @Autowired
+    private ProductTypeService productTypeService;
+
+    @Autowired
+    public ProductController(ProductService productService, ProductTypeService productTypeService) {
+        this.productService = productService;
+        this.productTypeService = productTypeService;
+    }
     // Display a list of all products
     @GetMapping("/products")
     public String showProductList(Model model) {
@@ -31,6 +43,8 @@ public class ProductController {
     public String showAddForm(Model model) {
         model.addAttribute("product", new Product());
         model.addAttribute("categories", categoryService.getAllCategories()); //Load categories
+        List<ProductType> productTypes = productTypeService.getAllProductType();
+        model.addAttribute("productTypes", productTypes);
         return "/products/add-product";
     }
     // Process the form for adding a new product
@@ -49,6 +63,7 @@ public class ProductController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
         model.addAttribute("product", product);
         model.addAttribute("categories", categoryService.getAllCategories()); //Load categories
+        model.addAttribute("producttype", productTypeService.getAllProductType());
         return "/products/update-product";
     }
     // Process the form for updating a product
@@ -59,7 +74,7 @@ public class ProductController {
             return "/products/update-product";
         }
         productService.updateProduct(product);
-        return "redirect:/products";
+        return "redirect:/products/products";
     }
     // Handle request to delete a product
     @GetMapping("/delete/{id}")

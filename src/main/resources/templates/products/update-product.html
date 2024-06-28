@@ -28,15 +28,22 @@
             <label for="category" class="form-label">Category:</label>
             <select th:field="*{category}" class="form-control" id="category">
                 <option th:each="category : ${categories}"
-                        th:value="${category.id}" th:text="${category.name}" th:selected="${category.id ==
-product.category.id}"></option>
+                        th:value="${category.id}" th:text="${category.name}" th:selected="${category.id ==product.category.id}"></option>
             </select>
+        </div>
+        <div class="mb-3">
+            <label for="size" class="form-label">Size:</label>
+            <input type="text" th:field="*{size}" class="form-control" id="size" required>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Description:</label>
             <textarea th:field="*{description}" class="form-control"
                       id="description" required></textarea>
         </div>
+        <label for="productType">Product Type:</label>
+        <select id="productType" th:field="*{productType}">
+            <option th:each="type : ${productTypes}" th:value="${type}" th:text="${type}">Product Type</option>
+        </select>
         <div class="mb-3">
             <label for="ImageUrl">Image</label>
             <input type="file" id="imageUrl" name="ImageUrl" class="form-control" />

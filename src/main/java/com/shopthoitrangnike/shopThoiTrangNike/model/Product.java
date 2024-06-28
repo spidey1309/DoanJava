@@ -14,13 +14,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "products")
 public class Product {
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +36,10 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "producttype_id")
+    private ProductType productType;
     private String imageUrl;
-
-
 
 }
