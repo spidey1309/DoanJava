@@ -9,17 +9,13 @@
 </head>
 <body>
 <section layout:fragment="content" class="container mt-5">
-    <h1 class="mb-4">Loại sản phẩm</h1>
+    <h1 class="mb-4">Form Category</h1>
     <form th:action="@{/categories/add}" th:object="${category}" method="post">
         <div class="mb-3">
-            <label for="name" class="form-label">Loại sản phẩm:</label>
+            <label for="name" class="form-label">Category Name:</label>
             <input type="text" id="name" th:field="*{name}" class="form-control"/>
             <div class="text-danger" th:if="${#fields.hasErrors('name')}"
                  th:errors="*{name}"></div>
-            <label for="style" class="form-label">Style:</label>
-            <input type="text" id="style" th:field="*{style}" class="form-control"/>
-            <div class="text-danger" th:if="${#fields.hasErrors('style')}"
-                 th:errors="*{style}"></div>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

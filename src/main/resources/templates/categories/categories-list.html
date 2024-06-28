@@ -19,7 +19,6 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Style</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -27,7 +26,6 @@
         <tr th:each="category : ${categories}">
             <td th:text="${category.id}"></td>
             <td th:text="${category.name}"></td>
-            <td th:text="${category.style}"></td>
             <td>
                 <a th:href="@{/categories/edit/{id}(id=${category.id})}" class="btn
 btn-success btn-sm">Edit</a>

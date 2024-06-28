@@ -21,10 +21,10 @@ public class ProductController {
     @Autowired
     private CategoryService categoryService; // Đảm bảo bạn đã inject CategoryService
     // Display a list of all products
-    @GetMapping
+    @GetMapping("/products")
     public String showProductList(Model model) {
         model.addAttribute("products", productService.getAllProducts());
-        return "/products/products-list";
+        return "/products/product-list";
     }
     // For adding a new product
     @GetMapping("/add")
