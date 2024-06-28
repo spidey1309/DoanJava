@@ -45,7 +45,7 @@ public class Product {
     private Category category;
     @ManyToOne
     @JoinColumn(name = "style_id")
-    private Style style;
+    private ProductType productType;
     private String imageUrl;
 
 

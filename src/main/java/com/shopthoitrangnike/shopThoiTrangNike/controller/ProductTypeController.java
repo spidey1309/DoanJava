@@ -2,9 +2,8 @@ package com.shopthoitrangnike.shopThoiTrangNike.controller;
 
 
 
-import com.shopthoitrangnike.shopThoiTrangNike.model.Category;
-import com.shopthoitrangnike.shopThoiTrangNike.model.Style;
-import com.shopthoitrangnike.shopThoiTrangNike.service.StyleService;
+import com.shopthoitrangnike.shopThoiTrangNike.model.ProductType;
+import com.shopthoitrangnike.shopThoiTrangNike.service.ProductTypeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,58 +18,58 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class StyleController {
+public class ProductTypeController {
     @Autowired
-    private final StyleService styleService;
+    private final ProductTypeService productTypeService;
     @GetMapping("/styles/add")
     public String showAddForm(Model model) {
-        model.addAttribute("style", new Style());
+        model.addAttribute("style", new ProductType());
         return "/styles/add-style";
     }
     @PostMapping("/styles/add")
-    public String addStyle(@Valid Style style, BindingResult result) {
+    public String addStyle(@Valid ProductType productType, BindingResult result) {
         if (result.hasErrors()) {
             return "/styles/add-style";
         }
-        styleService.addStyle(style);
+        productTypeService.addStyle(productType);
         return "redirect:/styles";
     }
     // Hiển thị danh sách danh mục
     @GetMapping("/styles")
     public String listStyles(Model model) {
-        List<Style> styles = styleService.getAllStyles();
-        model.addAttribute("styles", styles);
+        List<ProductType> productTypes = productTypeService.getAllStyles();
+        model.addAttribute("styles", productTypes);
         return "/styles/styles-list";
     }
     // GET request to show category edit form
     @GetMapping("/styles/edit/{id}")
     public String showUpdateForm(@PathVariable("id") Long id, Model model) {
-        Style style = styleService.getStyleById(id)
+        ProductType productType = productTypeService.getStyleById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid style Id:"
                         + id));
-        model.addAttribute("style", style);
+        model.addAttribute("style", productType);
         return "/styles/update-style";
     }
     // POST request to update category
     @PostMapping("/styles/update/{id}")
-    public String updateStyle(@PathVariable("id") Long id, @Valid Style style,
+    public String updateStyle(@PathVariable("id") Long id, @Valid ProductType productType,
                                  BindingResult result, Model model) {
         if (result.hasErrors()) {
-            style.setId(id);
+            productType.setId(id);
             return "/styles/update-style";
         }
-        styleService.updateStyle(style);
-        model.addAttribute("styles", styleService.getAllStyles());
+        productTypeService.updateStyle(productType);
+        model.addAttribute("styles", productTypeService.getAllStyles());
         return "redirect:/styles";
     }
     // GET request for deleting category
     @GetMapping("/styles/delete/{id}")
     public String deleteStyle(@PathVariable("id") Long id, Model model) {
-        Style style = styleService.getStyleById(id)
+        ProductType productType = productTypeService.getStyleById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid style Id:"
                         + id));
-        styleService.deleteStyleById(id);
-        model.addAttribute("styles", styleService.getAllStyles());
+        productTypeService.deleteStyleById(id);
+        model.addAttribute("styles", productTypeService.getAllStyles());
         return "redirect:/styles";
     }
 }

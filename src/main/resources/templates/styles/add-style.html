@@ -10,7 +10,7 @@
 <body>
 <section layout:fragment="content" class="container mt-5">
     <h1 class="mb-4">Form Style</h1>
-    <form th:action="@{/styles/add}" th:object="${style}" method="post">
+    <form th:action="@{/productTypes/add}" th:object="${productType}" method="post">
         <div class="mb-3">
             <label for="name" class="form-label">Style Name:</label>
             <input type="text" id="name" th:field="*{name}" class="form-control"/>

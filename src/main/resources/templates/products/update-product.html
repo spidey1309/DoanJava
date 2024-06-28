@@ -39,10 +39,10 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="style" class="form-label">Style:</label>
-            <select th:field="*{style}" class="form-control" id="style">
-                <option th:each="style : ${styles}"
-                        th:value="${style.id}" th:text="${style.name}" th:selected="${style.id == product.style.id}"></option>
+            <label for="productType" class="form-label">Style:</label>
+            <select th:field="*{productType}" class="form-control" id="productType">
+                <option th:each="productType : ${productTypes}"
+                        th:value="${productType.id}" th:text="${productType.name}" th:selected="${productType.id == product.productType.id}"></option>
             </select>
         </div>
         <div class="mb-3">

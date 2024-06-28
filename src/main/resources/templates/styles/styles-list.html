@@ -11,7 +11,7 @@
 <section layout:fragment="content">
     <h1>Styles List</h1>
     <div>
-        <a th:href="@{/styles/add}" class="btn btn-primary mb-3">Add New
+        <a th:href="@{/productTypes/add}" class="btn btn-primary mb-3">Add New
             Style</a>
     </div>
     <table class="table table-bordered table-hover">
@@ -23,13 +23,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="style : ${styles}">
-            <td th:text="${style.id}"></td>
-            <td th:text="${style.name}"></td>
+        <tr th:each="productType : ${productTypes}">
+            <td th:text="${productType.id}"></td>
+            <td th:text="${productType.name}"></td>
             <td>
-                <a th:href="@{/styles/edit/{id}(id=${style.id})}" class="btn
+                <a th:href="@{/productTypes/edit/{id}(id=${productType.id})}" class="btn
 btn-success btn-sm">Edit</a>
-                <a th:href="@{/styles/delete/{id}(id=${style.id})}"
+                <a th:href="@{/productTypes/delete/{id}(id=${productType.id})}"
                    class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
             </td>
         </tr>

@@ -10,8 +10,8 @@
 <body>
 <section layout:fragment="content" class="container mt-5">
     <h1 class="mb-4">Update Style</h1>
-    <form th:action="@{/styles/update/{id}(id=${style.id})}"
-          th:object="${style}" method="post" class="needs-validation" novalidate>
+    <form th:action="@{/productTypes/update/{id}(id=${productType.id})}"
+          th:object="${productType}" method="post" class="needs-validation" novalidate>
         <div class="mb-3">
             <label for="name" class="form-label">Style Name:</label>
             <input type="text" th:field="*{name}" class="form-control" id="name"
@@ -20,7 +20,7 @@
                  th:errors="*{name}">Valid name is required.</div>
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
-        <a th:href="@{/styles}" class="btn btn-link">Cancel</a>
+        <a th:href="@{/productTypes}" class="btn btn-link">Cancel</a>
     </form>
 </section>
 <script

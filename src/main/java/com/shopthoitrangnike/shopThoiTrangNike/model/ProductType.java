@@ -8,8 +8,8 @@ import lombok.*;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "styles")
-public class Style {
+@Table(name = "product_type")
+public class ProductType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
