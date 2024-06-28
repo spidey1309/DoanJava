@@ -15,4 +15,5 @@ public class Style {
     private Long id;
     @NotBlank(message = "Tên là bắt buộc")
     private String name;
+    private String description;
 }

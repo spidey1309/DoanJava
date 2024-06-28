@@ -14,6 +14,14 @@ import lombok.Setter;
 @Entity
 @Table(name = "products")
 public class Product {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,10 +38,12 @@ public class Product {
     @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Size sản phẩm chỉ chấp nhận chữ cái và khoảng trắng")
     private String size;
 
+    private String description;
+    private int quantity;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-    @ManyToOne
-    @JoinColumn(name = "size_id")
-    private Sizes sizes;
+
+
+
 }
