@@ -44,9 +44,7 @@ public class ProductController {
     // Process the form for adding a new product
     @PostMapping("/add")
     public String addProduct(@Valid Product product, BindingResult result) {
-        if (result.hasErrors()) {
-            return "/products/add-product";
-        }
+
         productService.addProduct(product);
         return "redirect:/products/products";
     }
@@ -68,12 +66,12 @@ public class ProductController {
             return "/products/update-product";
         }
         productService.updateProduct(product);
-        return "redirect:/products";
+        return "redirect:/products/products";
     }
     // Handle request to delete a product
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProductById(id);
-        return "redirect:/products";
+        return "redirect:/products/products";
     }
 }
