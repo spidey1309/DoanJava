@@ -46,7 +46,7 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="productType" class="form-label">Style:</label>
+            <label for="productType" class="form-label">Product Type:</label>
             <select th:field="*{productType}" class="form-control" id="productType">
                 <option th:each="productType : ${productTypes}"
                         th:value="${productType.id}" th:text="${productType.name}"></option>
