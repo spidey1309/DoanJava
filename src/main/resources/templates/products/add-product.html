@@ -39,6 +39,13 @@
                       id="description" required></textarea>
         </div>
         <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity:</label>
+            <input type="quantity" th:field="*{quantity}" class="form-control" id="quantity"
+                   required>
+            <div class="text-danger" th:if="${#fields.hasErrors('quantity')}"
+                 th:errors="*{quantity}"></div>
+        </div>
+        <div class="mb-3">
             <label for="category" class="form-label">Category:</label>
             <select th:field="*{category}" class="form-control" id="category">
                 <option th:each="category : ${categories}"
@@ -53,11 +60,11 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="image" class="form-label">Image:</label>
-            <input type="file" id="image" name="image" class="form-control" />
+            <label for="ImageUrl">Image</label>
+            <input type="file" id="imageUrl" name="ImageUrl" class="form-control" />
         </div>
         <button type="submit" class="btn btn-primary">Add Product</button>
-        <a th:href="@{/products}" class="btn btn-link">Cancel</a>
+        <a th:href="@{/products/products}" class="btn btn-link">Cancel</a>
     </form>
 </section>
 <script

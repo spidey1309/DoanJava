@@ -23,8 +23,9 @@
             <th>Price</th>
             <th>Size</th>
             <th>Description</th>
+            <th>Quantity</th>
             <th>Category Name</th>
-            <th>Style</th>
+            <th>Product Type</th>
             <th>Image</th>
             <th>Actions</th>
             <th>Add To Cart</th>
@@ -37,10 +38,11 @@
             <td th:text="${product.price}"></td>
             <td th:text="${product.size}"></td>
             <td th:text="${product.description}"></td>
+            <td th:text="${product.quantity}"></td>
             <td th:text="${product.category.name}"></td>
             <td th:text="${product.productType.name}"></td>
             <td>
-                <img th:src="@{/products/images/{id}(id=${product.image.id})}" alt="Product Image" width="200" height="200">
+                <img th:src="@{/images/}+${product.imageUrl}" alt="Product Image" width="200" height="200">
             </td>
             <td>
                 <!-- Hiển thị nút sửa và xóa chỉ dành cho người dùng ADMIN -->
