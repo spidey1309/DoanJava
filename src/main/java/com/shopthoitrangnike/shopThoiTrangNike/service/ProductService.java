@@ -35,8 +35,10 @@ public class ProductService {
         existingProduct.setName(product.getName());
         existingProduct.setPrice(product.getPrice());
         existingProduct.setSize(product.getSize());
+        existingProduct.setQuantity(product.getQuantity());
         existingProduct.setDescription(product.getDescription());
         existingProduct.setCategory(product.getCategory());
+        existingProduct.setImageUrl(product.getImageUrl());
         return productRepository.save(existingProduct);
     }
     // Delete a product by its id
