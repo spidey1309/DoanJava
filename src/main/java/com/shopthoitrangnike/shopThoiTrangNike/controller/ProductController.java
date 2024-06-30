@@ -10,10 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -22,14 +23,14 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @Autowired
-    private CategoryService categoryService;
+    private CategoryService categoryService; // Đảm bảo bạn đã inject CategoryService
     @Autowired
     private ProductTypeService productTypeService;
-
+    // Display a list of all products
     @GetMapping("/products")
     public String showProductList(Model model) {
         model.addAttribute("products", productService.getAllProducts());
-        return "products/product-list";
+        return "/products/product-list";
     }
     // For adding a new product
     @GetMapping("/add")
@@ -38,53 +39,40 @@ public class ProductController {
         model.addAttribute("categories", categoryService.getAllCategories()); //Load categories
         List<ProductType> productTypes = productTypeService.getAllStyles();
         model.addAttribute("productTypes", productTypes);
-        return "products/add-product";
+        return "/products/add-product";
     }
     // Process the form for adding a new product
     @PostMapping("/add")
-    public String addProduct(@Valid @ModelAttribute("product") Product product,
-                             @RequestParam("image") MultipartFile imageFile) throws IOException {
-        productService.saveProduct(product, imageFile);
-        return "redirect:/products";
+    public String addProduct(@Valid Product product, BindingResult result) {
+        if (result.hasErrors()) {
+            return "/products/add-product";
+        }
+        productService.addProduct(product);
+        return "redirect:/products/products";
     }
-
+    // For editing a product
     @GetMapping("/edit/{id}")
-    public String showUpdateForm(@PathVariable("id") long id, Model model) {
+    public String showEditForm(@PathVariable Long id, Model model) {
         Product product = productService.getProductById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
         model.addAttribute("product", product);
-        return "products/update-product";
+        model.addAttribute("categories", categoryService.getAllCategories()); //Load categories
+        model.addAttribute("productTypes", productTypeService.getAllStyles());
+        return "/products/update-product";
     }
-
+    // Process the form for updating a product
     @PostMapping("/update/{id}")
-    public String updateProduct(@PathVariable("id") long id,
-                                @Valid @ModelAttribute("product") Product product,
-                                BindingResult result,
-                                @RequestParam("image") MultipartFile imageFile,
-                                Model model) throws IOException {
+    public String updateProduct(@PathVariable Long id, @Valid Product product, BindingResult result) {
         if (result.hasErrors()) {
-            model.addAttribute("product", product);
-            return "products/update-product";
+            product.setId(id); // set id to keep it in the form in case of errors
+            return "/products/update-product";
         }
-
-        Product existingProduct = productService.getProductById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
-        if (!imageFile.isEmpty()) {
-            existingProduct.setImage(imageFile.getBytes());
-        }
-        existingProduct.setName(product.getName());
-        existingProduct.setPrice(product.getPrice());
-        existingProduct.setSize(product.getSize());
-        existingProduct.setDescription(product.getDescription());
-        existingProduct.setQuantity(product.getQuantity());
-        existingProduct.setCategory(product.getCategory());
-        existingProduct.setProductType(product.getProductType());
-        productService.saveProduct(existingProduct, imageFile);
+        productService.updateProduct(product);
         return "redirect:/products";
     }
-
+    // Handle request to delete a product
     @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable("id") long id) {
+    public String deleteProduct(@PathVariable Long id) {
         productService.deleteProductById(id);
         return "redirect:/products";
     }
