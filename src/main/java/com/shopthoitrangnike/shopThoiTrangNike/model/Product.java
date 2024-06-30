@@ -46,8 +46,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "style_id")
     private ProductType productType;
-    private String imageUrl;
 
+    @Lob
+    private byte[] image;
 
 
 }
