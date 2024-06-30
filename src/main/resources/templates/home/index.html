@@ -53,6 +53,21 @@
                             <li><a href="#">New Releases</a></li>
                             <li><a href="#">Today's Deals</a></li>
                             <li><a href="#">Customer Service</a></li>
+                            <li class="nav-item d-flex align-items-center"
+                                sec:authorize="isAuthenticated()">
+                    <span class="navbar-text text-white">
+                        Xin chào, <span sec:authentication="name" productType="margin right: 20px;"></span>
+                    </span>
+                            </li>
+                            <li class="nav-item" sec:authorize="isAuthenticated()">
+                                <form th:action="@{/logout}" method="post">
+                                    <button class="btn btn-outline-light"
+                                            type="submit">Logout</button>
+                                </form>
+                            </li>
+                            <li class="nav-item" sec:authorize="!isAuthenticated()">
+                                <a class="btn btn-outline-light" href="/login">Login</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -77,19 +92,19 @@
             <div class="containt_main">
                 <div id="mySidenav" class="sidenav">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                    <a href="index.html">Home</a>
-                    <a href="fashion.html">Fashion</a>
-                    <a href="electronic.html">Electronic</a>
-                    <a href="jewellery.html">Jewellery</a>
+                    <a href="index.html">Trang chủ</a>
+                    <a href="fashion.html">Nam</a>
+                    <a href="electronic.html">Nữ</a>
+                    <a href="jewellery.html">Trẻ em</a>
                 </div>
                 <span class="toggle_icon" onclick="openNav()"><img src="images/toggle-icon.png"></span>
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Category
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tất cả sản phẩm
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" href="#">Áo</a>
+                        <a class="dropdown-item" href="#">Quần</a>
+                        <a class="dropdown-item" href="#">Mũ</a>
                     </div>
                 </div>
                 <div class="main">
@@ -180,7 +195,7 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <div class="container">
-                    <h1 class="fashion_taital">Man & Woman Fashion</h1>
+                    <h1 class="fashion_taital">Thời trang nam</h1>
                     <div class="fashion_section_2">
                         <div class="row">
                             <div class="col-lg-4 col-sm-4">
@@ -222,7 +237,7 @@
             </div>
             <div class="carousel-item">
                 <div class="container">
-                    <h1 class="fashion_taital">Man & Woman Fashion</h1>
+                    <h1 class="fashion_taital">Thời trang nam</h1>
                     <div class="fashion_section_2">
                         <div class="row">
                             <div class="col-lg-4 col-sm-4">
@@ -320,7 +335,7 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <div class="container">
-                    <h1 class="fashion_taital">Electronic</h1>
+                    <h1 class="fashion_taital">Thời trang nữ</h1>
                     <div class="fashion_section_2">
                         <div class="row">
                             <div class="col-lg-4 col-sm-4">
@@ -362,7 +377,7 @@
             </div>
             <div class="carousel-item">
                 <div class="container">
-                    <h1 class="fashion_taital">Electronic</h1>
+                    <h1 class="fashion_taital">Thời trang nữ</h1>
                     <div class="fashion_section_2">
                         <div class="row">
                             <div class="col-lg-4 col-sm-4">
@@ -460,7 +475,7 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <div class="container">
-                    <h1 class="fashion_taital">Jewellery Accessories</h1>
+                    <h1 class="fashion_taital">Thời trang trẻ em</h1>
                     <div class="fashion_section_2">
                         <div class="row">
                             <div class="col-lg-4 col-sm-4">
@@ -502,7 +517,7 @@
             </div>
             <div class="carousel-item">
                 <div class="container">
-                    <h1 class="fashion_taital">Jewellery Accessories</h1>
+                    <h1 class="fashion_taital">Thời trang trẻ </h1>
                     <div class="fashion_section_2">
                         <div class="row">
                             <div class="col-lg-4 col-sm-4">
@@ -612,6 +627,7 @@
                 <li><a href="#">New Releases</a></li>
                 <li><a href="#">Today's Deals</a></li>
                 <li><a href="#">Customer Service</a></li>
+
             </ul>
         </div>
         <div class="location_main">Help Line  Number : <a href="#">+1 1800 1200 1200</a></div>
