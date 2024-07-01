@@ -85,20 +85,16 @@ public class ProductController {
     }
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") Long id, Model model) {
-
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);
         model.addAttribute("categories", categoryService.getAllCategories());
-        List<ProductType> productTypes = productTypeService.getAllStyles();
-        model.addAttribute("productTypes", productTypes);
+        model.addAttribute("productTypes", productTypeService.getAllStyles());
         return "/products/update-product";
     }
 
-    // Process the form for updating an existing product
-    @PostMapping("/edit/{id}")
-    public String updateProduct(@PathVariable("id") Long id, @Valid Product product, BindingResult result, @RequestParam("imagesFile") MultipartFile imagesFile) {
+    @PostMapping("/update")
+    public String updateProduct(@Valid @ModelAttribute("product") Product product, BindingResult result, @RequestParam("imagesFile") MultipartFile imagesFile) {
         if (result.hasErrors()) {
-            product.setId(id);
             return "/products/update-product";
         }
 
@@ -122,14 +118,19 @@ public class ProductController {
                 throw new RuntimeException("Could not create upload directory: " + e.getMessage());
             }
         }
-        productService.updateProduct(id, product);
+        productService.updateProduct(product.getId(), product);
         return "redirect:/products";
     }
-
     // For deleting an existing product
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProductById(id);
         return "redirect:/products";
+    }
+    @GetMapping("/search")
+    public String searchProducts(@RequestParam("keyword") String keyword, Model model) {
+        List<Product> searchResults = productService.searchProducts(keyword);
+        model.addAttribute("products", searchResults);
+        return "/products/product-list"; // Đảm bảo rằng bạn có file product-list.html để hiển thị kết quả
     }
 }

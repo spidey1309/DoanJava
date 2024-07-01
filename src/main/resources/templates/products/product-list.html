@@ -17,6 +17,10 @@
     <div class="mb-3 text-end">
         <a href="/cart" class="btn btn-info">View Cart</a>
     </div>
+    <form th:action="@{/products/search}" method="get" class="d-flex mb-3">
+        <input class="form-control me-2" type="search" name="keyword" placeholder="Search products" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
         <tr>
