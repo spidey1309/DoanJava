@@ -202,13 +202,22 @@
                         <div th:each="product : ${products}" class="col-lg-4 col-sm-4 mb-4">
                             <div class="box_main">
                                 <h4 class="shirt_text" th:text="${product.name}">Product Name</h4>
-                                <p class="price_text">Price <span style="color: #262626;" th:text="'$ ' + ${product.price}">Price</span></p>
+                                <p class="price_text">Giá <span style="color: #262626;" th:text="${product.price}+ 'Vnđ'">Price</span></p>
+                                <td>
+                                    <form th:action="@{/cart/add}" method="post" sec:authorize="isAuthenticated()" style="display: flex; align-items: center;">
+                                        <p style="margin: 0; margin-right: 10px;">Số lượng</p>
+                                        <input type="number" name="quantity" min="1" value="1" class="form-control d-inline-block" style="width: 70px; margin-right: 10px;">
+                                        <input type="hidden" th:value="${product.id}" name="productId"/>
+                                        <button type="submit" class="btn btn-warning btn-sm">Thêm Vào Giỏ</button>
+                                    </form>
+                                </td>
                                 <div class="tshirt_img">
                                     <img th:src="@{/images/{image}(image=${product.image})}" alt="Product Image" class="img-fluid">
                                 </div>
                                 <div class="btn_main mt-3">
-                                    <div class="buy_bt"><a th:href="@{/products/buy/{id}(id=${product.id})}">Buy Now</a></div>
-                                    <div class="seemore_bt"><a th:href="@{/products/details/{id}(id=${product.id})}">See More</a></div>
+                                    <div class="buy_bt"><a th:href="@{/products/buy/{id}(id=${product.id})}">Mua ngay</a></div>
+
+                                    <div class="seemore_bt"><a th:href="@{/products/details/{id}(id=${product.id})}">Xem thêm</a></div>
                                 </div>
                             </div>
                         </div>

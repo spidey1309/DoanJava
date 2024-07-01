@@ -14,28 +14,46 @@ import java.util.List;
 @Service
 @SessionScope
 public class CartService {
+
     private List<CartItem> cartItems = new ArrayList<>();
+
     @Autowired
     private ProductRepository productRepository;
 
-    public void addtoCart(Long productId, int quantity){
+    public void addToCart(Long productId, int quantity) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(()-> new IllegalArgumentException("Không tìm thấy sản phẩm: "+ productId));
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy sản phẩm: " + productId));
         cartItems.add(new CartItem(product, quantity));
     }
 
-    public List<CartItem> getCartItems(){
+    public List<CartItem> getCartItems() {
         return cartItems;
     }
 
-    public void removeFromCart(Long productId){
+    public void removeFromCart(Long productId) {
         cartItems.removeIf(item -> item.getProduct().getId().equals(productId));
     }
-    public void clearCart(){cartItems.clear();}
+
+    public void clearCart() {
+        cartItems.clear();
+    }
+
     public double calculateTotalAmount() {
         return cartItems.stream()
                 .mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice())
                 .sum();
     }
-}
 
+    public void updateItem(Long productId, int quantity) {
+        for (CartItem item : cartItems) {
+            if (item.getProduct().getId().equals(productId)) {
+                item.setQuantity(quantity);
+                break;
+            }
+        }
+    }
+
+    public void removeItem(Long productId) {
+        cartItems.removeIf(item -> item.getProduct().getId().equals(productId));
+    }
+}
