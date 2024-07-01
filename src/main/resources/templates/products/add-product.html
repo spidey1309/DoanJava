@@ -40,7 +40,7 @@
         </div>
         <div class="mb-3">
             <label for="quantity" class="form-label">Quantity:</label>
-            <input type="quantity" th:field="*{quantity}" class="form-control" id="quantity"
+            <input type="number" th:field="*{quantity}" class="form-control" id="quantity"
                    required>
             <div class="text-danger" th:if="${#fields.hasErrors('quantity')}"
                  th:errors="*{quantity}"></div>
@@ -60,8 +60,8 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="image">Image</label>
-            <input type="file" id="image" name="image" class="form-control" />
+            <label for="imagesFile">Image</label>
+            <input type="file" id="imagesFile" name="imagesFile" class="form-control" />
         </div>
         <button type="submit" class="btn btn-primary">Add Product</button>
         <a th:href="@{/products}" class="btn btn-link">Cancel</a>
