@@ -32,5 +32,10 @@ public class CartService {
         cartItems.removeIf(item -> item.getProduct().getId().equals(productId));
     }
     public void clearCart(){cartItems.clear();}
+    public double calculateTotalAmount() {
+        return cartItems.stream()
+                .mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice())
+                .sum();
+    }
 }
 
