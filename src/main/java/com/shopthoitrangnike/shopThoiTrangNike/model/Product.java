@@ -48,7 +48,7 @@ public class Product {
     private ProductType productType;
 
     @Lob
-    private byte[] image;
+    private String image;
 
 
 }
