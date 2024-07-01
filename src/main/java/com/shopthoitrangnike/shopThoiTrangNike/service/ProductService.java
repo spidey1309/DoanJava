@@ -16,34 +16,45 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
     // Retrieve all products from the database
+    // Lấy danh sách tất cả các sản phẩm
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
-    // Retrieve a product by its id
-    public Optional<Product> getProductById(Long id) {
-        return productRepository.findById(id);
+    // Lấy sản phẩm theo ID
+    public Product getProductById(Long id) {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        return optionalProduct.orElse(null);
     }
+
     // Add a new product to the database
-    public Product addProduct(Product product) {
-        return productRepository.save(product);
+    // Thêm sản phẩm mới
+    @Transactional
+    public void addProduct(Product product) {
+        productRepository.save(product);
     }
     // Update an existing product
-    public Product updateProduct(@NotNull Product product) {
-        Product existingProduct = productRepository.findById(product.getId())
-                .orElseThrow(() -> new IllegalStateException("Product with ID " +
-                        product.getId() + " does not exist."));
-        existingProduct.setName(product.getName());
-        existingProduct.setPrice(product.getPrice());
-        existingProduct.setSize(product.getSize());
-        existingProduct.setDescription(product.getDescription());
-        existingProduct.setCategory(product.getCategory());
-        return productRepository.save(existingProduct);
+    // Cập nhật sản phẩm hiện có
+    @Transactional
+    public void updateProduct(Long id, Product updatedProduct) {
+        Product existingProduct = getProductById(id);
+        if (existingProduct != null) {
+            existingProduct.setName(updatedProduct.getName());
+            existingProduct.setPrice(updatedProduct.getPrice());
+            existingProduct.setSize(updatedProduct.getSize());
+            existingProduct.setDescription(updatedProduct.getDescription());
+            existingProduct.setQuantity(updatedProduct.getQuantity());
+            existingProduct.setCategory(updatedProduct.getCategory());
+            existingProduct.setProductType(updatedProduct.getProductType());
+            if (updatedProduct.getImage() != null && !updatedProduct.getImage().isEmpty()) {
+                existingProduct.setImage(updatedProduct.getImage());
+            }
+            productRepository.save(existingProduct);
+        }
     }
     // Delete a product by its id
+    // Xóa sản phẩm theo ID
+    @Transactional
     public void deleteProductById(Long id) {
-        if (!productRepository.existsById(id)) {
-            throw new IllegalStateException("Product with ID " + id + " does not exist.");
-        }
         productRepository.deleteById(id);
     }
 }

@@ -83,29 +83,52 @@ public class ProductController {
         productService.addProduct(product);
         return "redirect:/products";
     }
-    // For editing a product
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        Product product = productService.getProductById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
+    public String showUpdateForm(@PathVariable("id") Long id, Model model) {
+
+        Product product = productService.getProductById(id);
         model.addAttribute("product", product);
-        model.addAttribute("categories", categoryService.getAllCategories()); //Load categories
-        model.addAttribute("productTypes", productTypeService.getAllStyles());
+        model.addAttribute("categories", categoryService.getAllCategories());
+        List<ProductType> productTypes = productTypeService.getAllStyles();
+        model.addAttribute("productTypes", productTypes);
         return "/products/update-product";
     }
-    // Process the form for updating a product
-    @PostMapping("/update/{id}")
-    public String updateProduct(@PathVariable Long id, @Valid Product product, BindingResult result) {
+
+    // Process the form for updating an existing product
+    @PostMapping("/edit/{id}")
+    public String updateProduct(@PathVariable("id") Long id, @Valid Product product, BindingResult result, @RequestParam("imagesFile") MultipartFile imagesFile) {
         if (result.hasErrors()) {
-            product.setId(id); // set id to keep it in the form in case of errors
+            product.setId(id);
             return "/products/update-product";
         }
-        productService.updateProduct(product);
+
+        if (!imagesFile.isEmpty()) {
+            String fileName = StringUtils.cleanPath(imagesFile.getOriginalFilename());
+            product.setImage(fileName);
+
+            String uploadDir = "src/main/resources/static/images/";
+            try {
+                Path uploadPath = Paths.get(uploadDir);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                try (InputStream inputStream = imagesFile.getInputStream()) {
+                    Path filePath = uploadPath.resolve(fileName);
+                    Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    throw new RuntimeException("Could not save image file: " + e.getMessage());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Could not create upload directory: " + e.getMessage());
+            }
+        }
+        productService.updateProduct(id, product);
         return "redirect:/products";
     }
-    // Handle request to delete a product
+
+    // For deleting an existing product
     @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable Long id) {
+    public String deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProductById(id);
         return "redirect:/products";
     }

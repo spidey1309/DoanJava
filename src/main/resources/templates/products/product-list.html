@@ -11,7 +11,7 @@
 <body>
 <section layout:fragment="content" class="container mt-3">
     <h1>Products List</h1>
-    <div>
+    <div sec:authorize="hasAuthority('ADMIN')">
         <a th:href="@{/products/add}" class="btn btn-primary mb-3">Add New Product</a>
     </div>
     <div class="mb-3 text-end">
