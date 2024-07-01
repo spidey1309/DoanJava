@@ -93,10 +93,13 @@
             <div class="containt_main">
                 <div id="mySidenav" class="sidenav">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                    <a href="index.html">Trang chủ</a>
-                    <a href="fashion.html">Nam</a>
-                    <a href="electronic.html">Nữ</a>
-                    <a href="jewellery.html">Trẻ em</a>
+                    <a th:href="@{/index.html}">Trang chủ</a>
+                    <a th:href="@{/fashion.html}">Nam</a>
+                    <a th:href="@{/electronic.html}">Nữ</a>
+                    <a th:href="@{/jewellery.html}">Trẻ em</a>
+                    <div th:each="category : ${categories}">
+                        <a th:href="@{'/category/' + ${category.id}}" th:text="${category.name}"></a>
+                    </div>
                 </div>
                 <span class="toggle_icon" onclick="openNav()"><img src="images/toggle-icon.png"></span>
                 <div class="dropdown">

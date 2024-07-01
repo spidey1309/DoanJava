@@ -37,23 +37,21 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="custom_menu">
-                        <ul>
-                            <li><a href="#">Best Sellers</a></li>
-                            <li><a href="#">Gift Ideas</a></li>
-                            <li><a href="#">New Releases</a></li>
-                            <li><a href="#">Today's Deals</a></li>
+                        <ul class="d-flex align-items-center justify-content-center">
+                            <li><a th:href="@{/categories}" class="nav-link text-white">Loại sản phẩm</a></li>
+                            <li><a th:href="@{/products}" class="nav-link text-white">Danh sách sản phẩm</a></li>
                             <li class="nav-item d-flex align-items-center" sec:authorize="isAuthenticated()">
-                                <span class="navbar-text text-white">
-                                    Xin chào, <span sec:authentication="name" productType="margin-right: 20px;"></span>
-                                </span>
+                            <span class="navbar-text text-white">
+                                Xin chào, <span sec:authentication="name"></span>
+                            </span>
                             </li>
                             <li class="nav-item" sec:authorize="isAuthenticated()">
-                                <form th:action="@{/logout}" method="post">
-                                    <button class="btn btn-outline-light" type="submit">Logout</button>
+                                <form th:action="@{/logout}" method="post" class="m-0">
+                                    <button class="btn btn-outline-light" type="submit">Đăng xuất</button>
                                 </form>
                             </li>
                             <li class="nav-item" sec:authorize="!isAuthenticated()">
-                                <a class="btn btn-outline-light" href="/login">Login</a>
+                                <a class="btn btn-outline-light" href="/login">Đăng nhập</a>
                             </li>
                         </ul>
                     </div>
