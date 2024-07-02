@@ -1,5 +1,6 @@
 package com.shopthoitrangnike.shopThoiTrangNike;
 
+import com.shopthoitrangnike.shopThoiTrangNike.Handler.CustomAuthenticationSuccessHandler;
 import com.shopthoitrangnike.shopThoiTrangNike.service.UserService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -60,10 +61,10 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .formLogin(formLogin -> formLogin
-                        .loginPage("/login") // Trang đăng nhập.
-                        .loginProcessingUrl("/login") // URL xử lý đăng nhập.
-                        .defaultSuccessUrl("/products") // Trang sau đăng nhập thành công.
-                        .failureUrl("/login?error") // Trang đăng nhập thất bại.
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .successHandler(new CustomAuthenticationSuccessHandler()) // Sử dụng custom success handler
+                        .failureUrl("/login?error")
                         .permitAll()
                 )
                 .rememberMe(rememberMe -> rememberMe
