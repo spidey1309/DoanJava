@@ -6,6 +6,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,4 +44,13 @@ public class UserController {
         userService.setDefaultRole(user.getUsername()); // Gán vai trò mặc định cho người dùng
         return "redirect:/login"; // Chuyển hướng người dùng tới trang "login"
     }
+    @GetMapping("/google")
+    public String oauth2LoginSuccessGoogle(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
+        User user = userService.processOAuthPostLogin(oauth2User);
+        model.addAttribute("user", user);
+        return "redirect:/";
+    }
+
 }

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
@@ -57,5 +58,26 @@ public class UserService implements UserDetailsService {
     public Optional<User> findByUsername(String username) throws
             UsernameNotFoundException {
         return userRepository.findByUsername(username);
+    }
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+    public User processOAuthPostLogin(OAuth2User oauth2User) {
+        String email = oauth2User.getAttribute("email");
+        Optional<User> existUser = findByEmail(email);
+
+        User user;
+        if (existUser.isEmpty()) {
+            user = new User();
+            user.setEmail(email);
+            user.setUsername(email);
+            user.setPassword("123");
+            user.setPhone("0000000000");
+            userRepository.save(user);
+            setDefaultRole(user.getUsername());
+        } else {
+            user = existUser.get();
+        }
+        return user;
     }
 }
