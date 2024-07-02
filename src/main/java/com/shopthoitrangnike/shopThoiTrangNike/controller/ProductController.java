@@ -43,6 +43,12 @@ public class ProductController {
         model.addAttribute("products", productService.getAllProducts());
         return "/products/product-list";
     }
+    @GetMapping("/detail/{id}")
+    public String showProductDetail(@PathVariable("id") Long id, Model model) {
+        Product product = productService.getProductById(id);
+        model.addAttribute("product", product);
+        return "/products/product-detail";
+    }
 
     // For adding a new product
     @GetMapping("/add")

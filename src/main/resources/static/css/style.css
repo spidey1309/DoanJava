@@ -1999,13 +1999,13 @@ button {
 .logo_section {
     width: 100%;
     float: left;
+    text-align: center; /* Căn giữa nội dung trong khung chứa */
 }
 
 .logo {
-    width: 100%;
-    float: left;
-    text-align: center;
-    padding: 30px 0px;
+    width: 150px; /* Kích thước logo, bạn có thể điều chỉnh */
+    height: auto;
+    display: inline-block; /* Giúp logo căn giữa */
 }
 
 
@@ -2546,12 +2546,14 @@ a:hover {
     width: 100%;
     float: left;
     background-color: #252525;
+    text-align: center; /* Căn giữa nội dung trong khung chứa */
     height: auto;
 }
 
 .footer_logo {
-    width: 100%;
-    text-align: center;
+    width: 150px;
+    height: auto;
+    display: inline-block;
 }
 
 .input_bt {
