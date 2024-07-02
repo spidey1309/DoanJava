@@ -49,7 +49,11 @@ public class ProductController {
         model.addAttribute("product", product);
         return "/products/product-detail";
     }
-
+    @GetMapping("/bestseller")
+    public String bestseller(Model model) {
+        model.addAttribute("products", productService.getAllProducts());
+        return "/products/product-bestseller";
+    }
     // For adding a new product
     @GetMapping("/add")
     public String showAddForm(Model model) {

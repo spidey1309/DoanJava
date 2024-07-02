@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout" lang="en">
+<head>
+    <title th:text="${title} ?: 'Products List'">Danh sách sản phẩm</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<section layout:fragment="content" class="container mt-3">
+    <h1 class="fashion_taital">Sản phẩm nổi bật</h1>
+    <div class="row">
+        <div th:each="product : ${products}" class="col-lg-4 col-sm-4 mb-4" th:if="${product.category.name} == 'Sản phẩm nổi bật'">
+            <div class="box_main">
+                <h4 class="shirt_text" th:text="${product.name}">Product Name</h4>
+                <p class="price_text">Giá <span style="color: #262626;" th:text="${product.price}+ 'Vnđ'">Price</span></p>
+                <td>
+                    <form th:action="@{/cart/add}" method="post" sec:authorize="isAuthenticated()" style="display: flex; align-items: center;">
+                        <p style="margin: 0; margin-right: 10px;">Số lượng</p>
+                        <input type="number" name="quantity" min="1" value="1" class="form-control d-inline-block" style="width: 70px; margin-right: 10px;">
+                        <input type="hidden" th:value="${product.id}" name="productId"/>
+                        <button type="submit" class="btn btn-warning btn-sm">Thêm Vào Giỏ</button>
+                    </form>
+                </td>
+                <div class="tshirt_img">
+                    <img th:src="@{/images/{image}(image=${product.image})}" alt="Product Image" class="img-fluid">
+                </div>
+                <div class="btn_main mt-3">
+                    <div class="buy_bt"><a th:href="@{/products/buy/{id}(id=${product.id})}">Mua ngay</a></div>
+
+                    <div class="seemore_bt"><a th:href="@{/products/detail/{id}(id=${product.id})}">Xem thêm</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>
