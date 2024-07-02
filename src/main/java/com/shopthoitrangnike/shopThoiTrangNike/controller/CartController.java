@@ -21,8 +21,11 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public String addToCart(@RequestParam Long productId, @RequestParam int quantity) {
+    public String addToCart(@RequestParam Long productId, @RequestParam int quantity, @RequestParam(required = false) boolean checkout) {
         cartService.addToCart(productId, quantity);
+        if (checkout) {
+            return "redirect:/cart/checkout";
+        }
         return "redirect:/cart";
     }
 
@@ -42,5 +45,12 @@ public class CartController {
     public String clearCart() {
         cartService.clearCart();
         return "redirect:/cart";
+    }
+
+    @GetMapping("/checkout")
+    public String showCheckout(Model model) {
+        model.addAttribute("cartItems", cartService.getCartItems());
+        model.addAttribute("totalAmount", cartService.calculateTotalAmount());
+        return "cart/checkout";
     }
 }

@@ -9,18 +9,41 @@
 </head>
 <body>
 <section layout:fragment="content" class="container mt-3">
-    <h1>Place Your Order</h1>
+    <h1>Checkout</h1>
+    <div th:if="${cartItems != null}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+                <th>Tổng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${cartItems}">
+                <td th:text="${item.product.name}">Product Name</td>
+                <td th:text="${item.quantity}">1</td>
+                <td th:text="${item.product.price}">1000</td>
+                <td th:text="${item.product.price * item.quantity}">1000</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="text-end mb-3">
+            <h5>Tổng cộng: <span th:text="${totalAmount}">0</span> VND</h5>
+        </div>
+    </div>
     <form th:action="@{/order/submit}" method="post">
         <div class="mb-3">
-            <label for="customerName" class="form-label">Your Name:</label>
+            <label for="customerName" class="form-label">Tên của bạn:</label>
             <input type="text" id="customerName" name="customerName" class="form-control" required>
         </div>
         <div class="mb-3">
-            <label for="address" class="form-label">Shipping Address:</label>
+            <label for="address" class="form-label">Địa chỉ giao hàng:</label>
             <input type="text" id="address" name="address" class="form-control" required>
         </div>
         <div class="mb-3">
-            <label for="phone" class="form-label">Phone Number:</label>
+            <label for="phone" class="form-label">Số điện thoại:</label>
             <input type="text" id="phone" name="phone" class="form-control" required>
         </div>
         <div class="mb-3">
@@ -28,18 +51,18 @@
             <input type="email" id="email" name="email" class="form-control" required>
         </div>
         <div class="mb-3">
-            <label for="notes" class="form-label">Notes:</label>
+            <label for="notes" class="form-label">Ghi chú:</label>
             <textarea id="notes" name="notes" class="form-control"></textarea>
         </div>
         <div class="mb-3">
-            <label for="paymentMethod" class="form-label">Payment Method:</label>
+            <label for="paymentMethod" class="form-label">Phương thức thanh toán:</label>
             <select id="paymentMethod" name="paymentMethod" class="form-select" required>
-                <option value="Credit Card">Credit Card</option>
+                <option value="Credit Card">Thẻ tín dụng</option>
                 <option value="PayPal">PayPal</option>
-                <option value="Cash on Delivery">Cash on Delivery</option>
+                <option value="Cash on Delivery">Thanh toán khi nhận hàng</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Submit Order</button>
+        <button type="submit" class="btn btn-primary">Đặt hàng</button>
     </form>
 </section>
 </body>

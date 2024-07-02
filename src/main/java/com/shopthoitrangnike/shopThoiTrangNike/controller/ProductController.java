@@ -2,6 +2,7 @@ package com.shopthoitrangnike.shopThoiTrangNike.controller;
 
 import com.shopthoitrangnike.shopThoiTrangNike.model.Product;
 import com.shopthoitrangnike.shopThoiTrangNike.model.ProductType;
+import com.shopthoitrangnike.shopThoiTrangNike.service.CartService;
 import com.shopthoitrangnike.shopThoiTrangNike.service.CategoryService;
 import com.shopthoitrangnike.shopThoiTrangNike.service.ProductService;
 import com.shopthoitrangnike.shopThoiTrangNike.service.ProductTypeService;
@@ -37,6 +38,7 @@ public class ProductController {
     private CategoryService categoryService; // Đảm bảo bạn đã inject CategoryService
     @Autowired
     private ProductTypeService productTypeService;
+
     // Display a list of all products
     @GetMapping
     public String showProductList(Model model) {
@@ -143,4 +145,5 @@ public class ProductController {
         model.addAttribute("products", searchResults);
         return "/products/product-list"; // Đảm bảo rằng bạn có file product-list.html để hiển thị kết quả
     }
+
 }
