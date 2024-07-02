@@ -31,11 +31,18 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("categories", categoryService.getAllCategories());
         return "home/index";
     }
     @PostMapping("/products/buy/{id}")
     public String buyNow(@PathVariable("id") Long productId, @RequestParam("quantity") int quantity) {
         cartService.addToCart(productId, quantity);
         return "redirect:/checkout";
+    }
+    @GetMapping("/search")
+    public String searchProducts(@RequestParam("query") String query, Model model) {
+        List<Product> products = productService.searchProducts(query);
+        model.addAttribute("products", products);
+        return "home/search";
     }
 }
