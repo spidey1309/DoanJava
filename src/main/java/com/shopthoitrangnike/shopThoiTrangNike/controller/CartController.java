@@ -53,4 +53,14 @@ public class CartController {
         model.addAttribute("totalAmount", cartService.calculateTotalAmount());
         return "cart/checkout";
     }
+    @PostMapping("/checkout/remove")
+    public String removechekout(@RequestParam Long productId) {
+        cartService.removeItem(productId);
+        return "redirect:/cart/checkout";
+    }
+    @PostMapping("/checkout/update")
+    public String checkoutupdateItem(@RequestParam Long productId, @RequestParam int quantity) {
+        cartService.updateItem(productId, quantity);
+        return "redirect:/cart/checkout";
+    }
 }

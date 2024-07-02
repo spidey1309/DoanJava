@@ -1,43 +1,135 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="layout" lang="en">
+      lang="en">
 <head>
-    <title th:text="${title} ?: 'Products List'">Danh sách sản phẩm</title>
+    <title th:text="${title} ?: 'Featured Products'">Sản phẩm nổi bật</title>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .navbar {
+            background-color: #333;
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+        .navbar-nav {
+            flex-direction: row;
+        }
+        .navbar-nav .nav-item {
+            margin-left: 10px;
+        }
+        .product-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .product-image {
+            width: 200px;
+            height: 250px;
+            object-fit: cover;
+        }
+        .btn-custom {
+            background-color: #ff6600;
+            color: #fff;
+        }
+        .btn-custom:hover {
+            background-color: #e65c00;
+        }
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+        }
+        .footer a {
+            color: #ff6600;
+        }
+    </style>
 </head>
 <body>
-<section layout:fragment="content" class="container mt-3">
-    <h1 class="fashion_taital">Sản phẩm nổi bật</h1>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container d-flex justify-content-between">
+        <a class="navbar-brand" href="/">Thời trang Nike's</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" th:href="@{/products/bestseller}">Sản phẩm nổi bật</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Nam</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Nữ</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Trẻ em</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Khuyến mãi</a></li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item d-flex align-items-center" sec:authorize="isAuthenticated()">
+                    <span class="navbar-text text-white">Xin chào, <span sec:authentication="name"></span></span>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post" class="m-0">
+                        <button class="btn btn-outline-light" type="submit">Đăng xuất</button>
+                    </form>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="btn btn-outline-light" href="/login">Đăng nhập</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section class="container mt-3">
+    <h1 class="text-center">Sản phẩm nổi bật</h1>
     <div class="row">
-        <div th:each="product : ${products}" class="col-lg-4 col-sm-4 mb-4" th:if="${product.category.name} == 'Sản phẩm nổi bật'">
-            <div class="box_main">
-                <h4 class="shirt_text" th:text="${product.name}">Product Name</h4>
-                <p class="price_text">Giá <span style="color: #262626;" th:text="${product.price}+ 'Vnđ'">Price</span></p>
-                <td>
-                    <form th:action="@{/cart/add}" method="post" sec:authorize="isAuthenticated()" style="display: flex; align-items: center;">
-                        <p style="margin: 0; margin-right: 10px;">Số lượng</p>
-                        <input type="number" name="quantity" min="1" value="1" class="form-control d-inline-block" style="width: 70px; margin-right: 10px;">
+        <div th:each="product : ${products}" class="col-lg-4 col-md-6 mb-4">
+            <div class="product-container">
+                <h3 th:text="${product.name}">Product Name</h3>
+                <div class="product-image-container text-center">
+                    <img th:src="@{/images/{image}(image=${product.image})}" alt="Product Image" class="img-fluid product-image">
+                </div>
+                <p><strong>Size:</strong> <span th:text="${product.size}">Size</span></p>
+                <p><strong>Mô tả:</strong> <span th:text="${product.description}">Description</span></p>
+                <p><strong>Số lượng:</strong> <span th:text="${product.quantity}">Quantity</span></p>
+                <p><strong>Loại sản phẩm:</strong> <span th:text="${product.category.name}">Category</span></p>
+                <p><strong>Phong cách:</strong> <span th:text="${product.productType.name}">Product Type</span></p>
+                <p><strong>Giá:</strong> <span th:text="${product.price}">Price</span> VND</p>
+                <div class="btn_main mt-3">
+                    <form th:action="@{/cart/add}" method="post" sec:authorize="isAuthenticated()" class="d-flex align-items-center mb-3">
+                        <label for="quantity" class="me-2 mb-0">Số lượng:</label>
+                        <input type="number" id="quantity" name="quantity" min="1" value="1" class="form-control d-inline-block" style="width: 70px; margin-right: 10px;">
                         <input type="hidden" th:value="${product.id}" name="productId"/>
                         <button type="submit" class="btn btn-warning btn-sm">Thêm Vào Giỏ</button>
                     </form>
-                </td>
-                <div class="tshirt_img">
-                    <img th:src="@{/images/{image}(image=${product.image})}" alt="Product Image" class="img-fluid">
-                </div>
-                <div class="btn_main mt-3">
-                    <div class="buy_bt"><a th:href="@{/products/buy/{id}(id=${product.id})}">Mua ngay</a></div>
-
-                    <div class="seemore_bt"><a th:href="@{/products/detail/{id}(id=${product.id})}">Xem thêm</a></div>
+                    <div class="d-flex justify-content-between">
+                        <div class="buy_bt">
+                            <form th:action="@{/cart/add}" method="post">
+                                <input type="hidden" name="productId" th:value="${product.id}"/>
+                                <input type="hidden" name="quantity" value="1"/>
+                                <input type="hidden" name="checkout" value="true"/>
+                                <button type="submit" class="btn btn-warning btn-sm">Mua ngay</button>
+                            </form>
+                        </div>
+                        <a th:href="@{/products/detail/{id}(id=${product.id})}" class="btn btn-secondary btn-sm">Xem thêm</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
-</script>
+
+<footer class="footer text-center mt-5">
+    <div class="container">
+        <p>&copy; 2024 Thời trang Nike's. All rights reserved. Design by <a href="https://html.design">Free html Templates</a></p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

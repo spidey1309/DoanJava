@@ -23,6 +23,14 @@ public class CartService {
     public void addToCart(Long productId, int quantity) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy sản phẩm: " + productId));
+
+        for (CartItem item : cartItems) {
+            if (item.getProduct().getId().equals(productId)) {
+                item.setQuantity(item.getQuantity() + quantity);
+                return;
+            }
+        }
+
         cartItems.add(new CartItem(product, quantity));
     }
 
