@@ -64,4 +64,11 @@ public class CartService {
     public void removeItem(Long productId) {
         cartItems.removeIf(item -> item.getProduct().getId().equals(productId));
     }
+    public double getTotalAmount() {
+        double totalAmount = 0.0;
+        for (CartItem item : cartItems) {
+            totalAmount += item.getProduct().getPrice() * item.getQuantity();
+        }
+        return totalAmount;
+    }
 }

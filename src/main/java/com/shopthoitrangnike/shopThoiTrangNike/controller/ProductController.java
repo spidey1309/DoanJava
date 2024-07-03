@@ -2,12 +2,12 @@ package com.shopthoitrangnike.shopThoiTrangNike.controller;
 
 import com.shopthoitrangnike.shopThoiTrangNike.model.Product;
 import com.shopthoitrangnike.shopThoiTrangNike.model.ProductType;
-import com.shopthoitrangnike.shopThoiTrangNike.service.CartService;
-import com.shopthoitrangnike.shopThoiTrangNike.service.CategoryService;
-import com.shopthoitrangnike.shopThoiTrangNike.service.ProductService;
-import com.shopthoitrangnike.shopThoiTrangNike.service.ProductTypeService;
+import com.shopthoitrangnike.shopThoiTrangNike.model.PromoCode;
+import com.shopthoitrangnike.shopThoiTrangNike.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,7 +26,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/products")
@@ -38,6 +40,10 @@ public class ProductController {
     private CategoryService categoryService; // Đảm bảo bạn đã inject CategoryService
     @Autowired
     private ProductTypeService productTypeService;
+    @Autowired
+    private PromoCodeService promoCodeService;
+    @Autowired
+    private CartService cartService;
 
     // Display a list of all products
     @GetMapping
@@ -145,5 +151,52 @@ public class ProductController {
         model.addAttribute("products", searchResults);
         return "/products/product-list"; // Đảm bảo rằng bạn có file product-list.html để hiển thị kết quả
     }
+    @PostMapping("/cart/apply-discount")
+    public String applyDiscount(@RequestParam("promoCode") String promoCode, Model model) {
+        Optional<PromoCode> promoCodeOptional = promoCodeService.validatePromoCode(promoCode, cartService.getTotalAmount());
+        if (promoCodeOptional.isPresent()) {
+            PromoCode validPromoCode = promoCodeOptional.get();
+            double discountPercentage = validPromoCode.getDiscount();
+            double totalAmount = cartService.getTotalAmount();
+            double discountedAmount = totalAmount - (totalAmount * discountPercentage / 100);
+            model.addAttribute("discountedAmount", discountedAmount);
+            model.addAttribute("discountPercentage", discountPercentage);
+        } else {
+            model.addAttribute("discountError", "Mã giảm giá không hợp lệ hoặc đã hết hạn.");
+        }
+        model.addAttribute("cartItems", cartService.getCartItems());
+        model.addAttribute("totalAmount", cartService.getTotalAmount());
+        return "cart/checkout";
+    }
+    @GetMapping("/promotions")
+    public String getPromotions(Model model) {
+        List<PromoCode> promoCodes = promoCodeService.getAllPromoCodes();
+        System.out.println(promoCodes);
+        model.addAttribute("promocode", promoCodes);
+        return "/products/promotions";
+    }
+    @GetMapping("/create")
+    public String showCreatePromoCodeForm(Model model) {
+        List<PromoCode> promoCodes = promoCodeService.getAllPromoCodes();
+        System.out.println(promoCodes);
+        model.addAttribute("promocode", promoCodes);
+        return "/products/create-promotions";
+    }
+    @PostMapping("/create")
+    public ResponseEntity<?> createPromoCode(@RequestParam String code,
+                                             @RequestParam double discount,
+                                             @RequestParam boolean active,
+                                             @RequestParam String startDate,
+                                             @RequestParam String endDate) {
+        PromoCode newPromoCode = new PromoCode();
+        newPromoCode.setCode(code);
+        newPromoCode.setDiscount(discount);
+        newPromoCode.setActive(active);
+        newPromoCode.setStartDate(LocalDate.parse(startDate));
+        newPromoCode.setEndDate(LocalDate.parse(endDate));
 
+        promoCodeService.save(newPromoCode);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Thêm mã giảm giá thành công!!");
+    }
 }
